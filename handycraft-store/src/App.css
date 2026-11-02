@@ -1,0 +1,68 @@
+#root {
+  width: 100%;
+  margin: 0 auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f5f0;
+  color: #333;
+}
+
+.store {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 30px 20px;
+  text-align: center;
+  background-color: #795548;
+  color: white;
+}
+
+.header h1 {
+  margin: 0 0 10px;
+  font-size: 36px;
+}
+
+.header p {
+  margin: 0;
+  font-size: 18px;
+}
+
+.welcome {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #eadcc8;
+}
+
+.welcome h2,
+.catalog h2 {
+  font-size: 28px;
+}
+
+.welcome p,
+.catalog p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.catalog {
+  flex: 1;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.footer {
+  padding: 20px;
+  text-align: center;
+  background-color: #795548;
+  color: white;
+}
