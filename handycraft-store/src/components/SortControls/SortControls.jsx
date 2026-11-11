@@ -1,11 +1,6 @@
 import PropTypes from 'prop-types'
+import { sortConfigShape } from '../../utils/sortConfigShape'
 import './SortControls.css'
-
-// Описуємо форму об'єкта конфігурації сортування (Варіант 14)
-export const sortConfigShape = PropTypes.shape({
-  field: PropTypes.oneOf(['name', 'price', 'category']).isRequired,
-  direction: PropTypes.oneOf(['asc', 'desc']).isRequired,
-})
 
 function SortControls({ sortConfig, onSortChange }) {
   function handleFieldChange(event) {
