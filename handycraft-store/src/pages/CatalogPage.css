@@ -1,0 +1,23 @@
+.catalog-page {
+  width: 100%;
+}
+
+.catalog-page__results-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.catalog-page__empty-message {
+  padding: 40px;
+  background-color: #1b1b1b;
+  border: 2px solid #555;
+  color: #aaa;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 1px;
+}
