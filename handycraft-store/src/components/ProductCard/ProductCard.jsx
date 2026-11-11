@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { CATEGORIES } from '@config/categories'
 import './product-card.css'
 
 const PLACEHOLDER_IMAGE = '/src/assets/product-placeholder.svg'
@@ -8,12 +9,13 @@ const PLACEHOLDER_IMAGE = '/src/assets/product-placeholder.svg'
  * @param {string} props.name
  * @param {number} props.price
  * @param {string} [props.image]
- * @param {string} props.category
+ * @param {string} [props.category]
  * @param {boolean} [props.inStock=true]
- * @param {boolean} props.isHandmade
  */
-function ProductCard({ name, price, image, category, inStock = true, isHandmade }) {
+function ProductCard({ name, price, image, category, inStock = true }) {
   const imageSrc = image || PLACEHOLDER_IMAGE
+  // Перевіряємо, чи належить товар до категорії ручної роботи
+  const isHandmade = category === CATEGORIES.WOOD
 
   return (
     <article className="product-card">
@@ -21,16 +23,19 @@ function ProductCard({ name, price, image, category, inStock = true, isHandmade 
       <div className="product-card__content">
         <h3 className="product-card__name">{name}</h3>
         <p className="product-card__price">{price} грн</p>
-        <p className="product-card__category">{category}</p>
         
-        {/* Бейдж відсутності на складі */}
+        {/* Обробка відсутньої категорії (Варіант 9) */}
+        <p className="product-card__category">
+          {category || 'Без категорії'}
+        </p>
+        
         {!inStock && (
           <span className="product-card__badge product-card__badge--out">
             Немає в наявності
           </span>
         )}
 
-        {/* Новий бейдж Хендмейд (Варіант 4) */}
+        {/* Бейдж Хендмейд на основі категорії (Варіант 14) */}
         {isHandmade && (
           <span className="product-card__badge product-card__badge--handmade">
             Хендмейд
@@ -45,9 +50,8 @@ ProductCard.propTypes = {
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   image: PropTypes.string,
-  category: PropTypes.string.isRequired,
+  category: PropTypes.string, // Більше не isRequired (для Варіанту 9)
   inStock: PropTypes.bool,
-  isHandmade: PropTypes.bool.isRequired, // Обов'язковий проп згідно з варіантом
 }
 
 export default ProductCard

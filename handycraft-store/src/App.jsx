@@ -9,14 +9,13 @@ function App() {
       price: 450,
       category: 'Кераміка',
       image: '/src/assets/product-placeholder.svg',
-      isHandmade: false,
     },
     {
       id: 2,
       name: 'Дерев’яна миска',
       price: 320,
       category: 'Дерев’яні вироби',
-      isHandmade: true, // Для цієї картки з'явиться бейдж "Хендмейд"
+      // Бейдж Хендмейд з'явиться автоматично завдяки конфігу
     },
     {
       id: 3,
@@ -24,8 +23,13 @@ function App() {
       price: 780,
       category: 'Прикраси',
       image: '/src/assets/product-placeholder.svg',
-      inStock: false, // Товару немає в наявності
-      isHandmade: true, // Додасться бейдж "Хендмейд"
+      inStock: false,
+    },
+    {
+      id: 4,
+      name: 'Таємничий артефакт',
+      price: 100,
+      // Немає ні картинки, ні категорії (тест Варіанту 9)
     },
   ]
 
