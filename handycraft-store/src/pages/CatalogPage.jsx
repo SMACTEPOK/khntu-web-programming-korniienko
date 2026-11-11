@@ -1,55 +1,85 @@
 import { useState, useEffect } from 'react'
 import SearchPanel from '../components/SearchPanel/SearchPanel'
-import ProductCard from '../components/ProductCard/ProductCard'
+import SortControls from '../components/SortControls/SortControls'
+import ProductList from '../components/ProductList/ProductList'
 import { mockProducts } from '../data/mockProducts'
 import { filterProducts } from '../utils/filterProducts'
 import './CatalogPage.css'
 
 function CatalogPage() {
-  // Миттєвий стан для поля вводу
   const [searchQuery, setSearchQuery] = useState('')
-  // Стан із затримкою для фільтрації (debounce)
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery)
+  
+  // Стан конфігурації сортування (Варіант 14)
+  const [sortConfig, setSortConfig] = useState({
+    field: 'category', // За замовчуванням сортуємо за категорією (Варіант 4)
+    direction: 'asc',
+  })
 
-  // Ефект для debounce (затримка 300 мс)
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedQuery(searchQuery)
     }, 300)
 
-    // Очищення таймера при наступному введенні або розмонтуванні
     return () => clearTimeout(timerId)
   }, [searchQuery])
 
-  // Використовуємо нашу утиліту (Варіант 14)
+  // 1. Спочатку фільтруємо
   const filteredProducts = filterProducts(mockProducts, debouncedQuery)
 
-  // Беремо назву першого товару як підказку (Варіант 4)
+  // 2. Потім сортуємо (Варіант 4 + Варіант 9)
+  const sortedAndFilteredProducts = [...filteredProducts].sort((a, b) => {
+    // Витягуємо значення поля для порівняння. Якщо undefined - ставимо порожній рядок.
+    const valueA = a[sortConfig.field] || ''
+    const valueB = b[sortConfig.field] || ''
+
+    // СПЕЦІАЛЬНА ЛОГІКА ДЛЯ КАТЕГОРІЙ (Варіант 9: undefined в кінець)
+    if (sortConfig.field === 'category') {
+      const catA = a.category
+      const catB = b.category
+
+      if (!catA && !catB) return 0 // Обидва без категорії - байдуже
+      if (!catA) return 1 // "a" без категорії -> відправляємо в кінець
+      if (!catB) return -1 // "b" без категорії -> відправляємо в кінець
+
+      // Використовуємо localeCompare для правильного українського алфавіту
+      const comparison = catA.localeCompare(catB, 'uk')
+      return sortConfig.direction === 'asc' ? comparison : -comparison
+    }
+
+    // Звичайне сортування для інших полів (назва, ціна)
+    if (typeof valueA === 'string' && typeof valueB === 'string') {
+      const comparison = valueA.localeCompare(valueB, 'uk')
+      return sortConfig.direction === 'asc' ? comparison : -comparison
+    }
+
+    // Для чисел (ціни)
+    if (valueA < valueB) return sortConfig.direction === 'asc' ? -1 : 1
+    if (valueA > valueB) return sortConfig.direction === 'asc' ? 1 : -1
+    return 0
+  })
+
   const hintText = mockProducts[0].name
 
   return (
     <div className="catalog-page">
-      <SearchPanel 
-        value={searchQuery} 
-        onChange={setSearchQuery} 
-        hint={hintText} 
-      />
+      <div className="catalog-page__controls">
+        <SearchPanel 
+          value={searchQuery} 
+          onChange={setSearchQuery} 
+          hint={hintText} 
+        />
+        <SortControls 
+          sortConfig={sortConfig} 
+          onSortChange={setSortConfig} 
+        />
+      </div>
       
       <p className="catalog-page__results-count">
-        Знайдено товарів: {filteredProducts.length}
+        Знайдено товарів: {sortedAndFilteredProducts.length}
       </p>
 
-      {filteredProducts.length === 0 ? (
-        <p className="catalog-page__empty-message">
-          За запитом «{debouncedQuery}» нічого не знайдено. Спробуйте інше формулювання.
-        </p>
-      ) : (
-        <div className="product-grid">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
-        </div>
-      )}
+      <ProductList products={sortedAndFilteredProducts} />
     </div>
   )
 }

@@ -1,12 +1,13 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  width: 280px;
+  width: 100%; /* Змінено з 280px на 100%, щоб картка підлаштовувалась під сітку Grid */
+  min-width: 0; /* Запобігає вилазанню контенту за межі комірки */
   margin: 0;
   overflow: hidden;
-  background-color: #303030 !important; /* Примусово темний фон */
+  background-color: #303030 !important;
   border: 2px solid #555;
-  border-radius: 0 !important; /* Гострі кути */
+  border-radius: 0 !important;
   box-shadow: 8px 8px 0 #111;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
@@ -32,11 +33,12 @@
   align-items: flex-start;
   gap: 10px;
   padding: 20px;
+  width: 100%; /* Щоб контент не вилазив */
 }
 
 .product-card__name {
   margin: 0;
-  color: #fff; /* Білий текст */
+  color: #fff;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.2;
@@ -60,11 +62,10 @@
   text-transform: uppercase;
 }
 
-/* Чорний брутальний бейдж замість червоного */
 .product-card__badge {
   margin-top: 8px;
   padding: 6px 10px;
-  background-color: #111 !important; 
+  background-color: #111 !important;
   color: #aaa !important;
   border: 1px solid #666;
   border-radius: 0 !important;
@@ -73,4 +74,16 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+.product-card__badge--out {
+  border-color: #444;
+  color: #777 !important;
+}
+
+.product-card__badge--handmade {
+  border-color: #aaa;
+  color: #fff !important;
+  background-color: #222 !important;
+  box-shadow: 3px 3px 0 #111;
 }
