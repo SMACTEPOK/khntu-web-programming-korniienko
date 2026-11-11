@@ -7,7 +7,7 @@
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 24px;
-  margin-bottom: 32px; /* Відступ між пошуком/сортуванням та лічильником */
+  margin-bottom: 32px;
 }
 
 .catalog-page__results-count {
@@ -15,7 +15,49 @@
   font-size: 12px;
   color: #888;
   margin-top: 0;
-  margin-bottom: 40px; /* Відступ між лічильником та сіткою карток */
+  margin-bottom: 40px;
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+/* Стан завантаження */
+.catalog-page__status-message {
+  padding: 40px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: #aaa;
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: pulse 1.5s infinite;
+}
+
+/* Стан помилки (Варіант 14) */
+.catalog-page__error-wrapper {
+  width: 100%;
+  padding: 24px;
+  border: 2px solid #882222;
+  background-color: #1b1111;
+}
+
+.catalog-page__error-message {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: #ff6666;
+  margin-bottom: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.catalog-page__error-info {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 32px;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
 }
