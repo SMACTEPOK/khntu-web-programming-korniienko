@@ -7,25 +7,25 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "lint:strict": "eslint -c eslint.strict.config.js .",
     "format": "prettier --write .",
     "preview": "vite preview"
   },
   "dependencies": {
     "prop-types": "^15.8.1",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.2",
+    "@eslint/js": "^10.14.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.0",
     "eslint": "^10.14.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.7",
-    "globals": "^17.14.0",
-    "oxlint": "^1.89.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
     "prettier": "^3.9.10",
     "vite": "^8.3.5"
   }

@@ -6,7 +6,8 @@ import prettier from 'eslint-config-prettier'
 
 export default [
   {
-    ignores: ['dist'],
+    // Додано 'coverage' для ігнорування звітів тестування (для ЛР19)
+    ignores: ['dist', 'coverage'],
   },
   {
     files: ['**/*.{js,jsx}'],
