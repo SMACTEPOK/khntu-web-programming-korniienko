@@ -1,8 +1,8 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  width: 100%; /* Змінено з 280px на 100%, щоб картка підлаштовувалась під сітку Grid */
-  min-width: 0; /* Запобігає вилазанню контенту за межі комірки */
+  width: 100%;
+  min-width: 0;
   margin: 0;
   overflow: hidden;
   background-color: #303030 !important;
@@ -33,7 +33,8 @@
   align-items: flex-start;
   gap: 10px;
   padding: 20px;
-  width: 100%; /* Щоб контент не вилазив */
+  width: 100%;
+  flex: 1; /* Дозволяє контенту розтягуватися на всю висоту */
 }
 
 .product-card__name {
@@ -43,6 +44,7 @@
   font-weight: 700;
   line-height: 1.2;
   text-transform: uppercase;
+  min-height: 2.4em; /* Фіксує висоту для 2-х рядків, щоб вирівняти всі картки */
 }
 
 .product-card__price {
@@ -62,8 +64,16 @@
   text-transform: uppercase;
 }
 
+.product-card__badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: auto; /* Притискає бейджі та форму донизу картки */
+  margin-bottom: 8px;
+}
+
 .product-card__badge {
-  margin-top: 8px;
   padding: 6px 10px;
   background-color: #111 !important;
   color: #aaa !important;
@@ -74,6 +84,12 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+/* Монохромні кольори замість зелених */
+.product-card__badge--in {
+  border-color: #ccc;
+  color: #ccc !important;
 }
 
 .product-card__badge--out {

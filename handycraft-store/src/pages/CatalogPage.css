@@ -1,6 +1,4 @@
-.catalog-page {
-  width: 100%;
-}
+.catalog-page { width: 100%; }
 
 .catalog-page__controls {
   display: flex;
@@ -20,7 +18,6 @@
   text-transform: uppercase;
 }
 
-/* Стан завантаження */
 .catalog-page__status-message {
   padding: 40px;
   font-family: var(--font-mono);
@@ -32,28 +29,44 @@
   animation: pulse 1.5s infinite;
 }
 
-/* Стан помилки (Варіант 14) */
-.catalog-page__error-wrapper {
-  width: 100%;
-  padding: 24px;
-  border: 2px solid #882222;
-  background-color: #1b1111;
-}
-
 .catalog-page__error-message {
-  font-family: var(--font-mono);
-  font-size: 16px;
+  padding: 40px;
+  background-color: #2a1111;
+  border: 2px solid #882222;
   color: #ff6666;
-  margin-bottom: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-align: center;
 }
 
-.catalog-page__error-info {
+.catalog-page__forms-section {
+  margin-top: 80px;
+  border-top: 2px solid #555;
+  padding-top: 40px;
+}
+
+.catalog-page__forms-title {
   font-family: var(--font-mono);
-  font-size: 13px;
-  color: #aaa;
+  color: #e0e0e0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  text-transform: uppercase;
   margin-bottom: 32px;
+}
+
+.catalog-page__forms-grid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.catalog-page__reviews-count {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #4ecd4c;
+  margin-top: 16px;
 }
 
 @keyframes pulse {

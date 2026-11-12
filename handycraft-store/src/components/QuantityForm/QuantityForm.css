@@ -1,0 +1,58 @@
+.quantity-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #303030;
+  padding: 24px;
+  border: 2px solid #555;
+  flex: 1 1 300px; /* Дозволяє формі гнучко займати простір */
+  max-width: 400px;
+}
+
+.quantity-form__group {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.quantity-form__input {
+  width: 80px;
+  flex-shrink: 0; /* Забороняє інпуту стискатися менше 80px */
+  padding: 12px 16px;
+  background-color: #1b1b1b;
+  color: #fff;
+  border: 2px solid #555;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  outline: none;
+}
+
+.quantity-form__input:focus {
+  border-color: #aaa;
+}
+
+.quantity-form__submit {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 16px;
+  background-color: #111;
+  color: #fff;
+  border: 2px solid #aaa;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.quantity-form__submit:hover {
+  background-color: #444;
+}
+
+.quantity-form__error {
+  color: #ff6666;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  margin: 0;
+}

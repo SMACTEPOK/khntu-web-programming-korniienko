@@ -1,6 +1,8 @@
 export const CATEGORIES = {
   CERAMICS: 'Кераміка',
+  TEXTILES: 'Текстиль',
   WOOD: 'Дерев’яні вироби',
+  CANDLES: 'Свічки',
   JEWELRY: 'Прикраси',
 }
 
