@@ -3,11 +3,10 @@ import SearchPanel from '../components/SearchPanel/SearchPanel'
 import SortControls from '../components/SortControls/SortControls'
 import ProductList from '../components/ProductList/ProductList'
 import ReviewForm from '../components/ReviewForm/ReviewForm'
-import PromoCodeForm from '../components/PromoCodeForm/PromoCodeForm'
 import { filterProducts } from '../utils/filterProducts'
 import './CatalogPage.css'
 
-function CatalogPage() {
+function CatalogPage({ cart }) {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -15,16 +14,12 @@ function CatalogPage() {
 
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery)
-  const [sortConfig, setSortConfig] = useState({
-    field: 'category',
-    direction: 'asc',
-  })
+  const [sortConfig, setSortConfig] = useState({ field: 'category', direction: 'asc' })
 
   useEffect(() => {
     let isActive = true
     async function loadProducts() {
       setIsLoading(true)
-      setError(null)
       try {
         const response = await fetch('/api/products')
         if (!response.ok) throw new Error(`Сервер повернув статус ${response.status}`)
@@ -41,9 +36,7 @@ function CatalogPage() {
   }, [])
 
   useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDebouncedQuery(searchQuery)
-    }, 300)
+    const timerId = setTimeout(() => setDebouncedQuery(searchQuery), 300)
     return () => clearTimeout(timerId)
   }, [searchQuery])
 
@@ -84,18 +77,13 @@ function CatalogPage() {
       </div>
       
       <p className="catalog-page__results-count">Знайдено товарів: {sortedAndFilteredProducts.length}</p>
-      <ProductList products={sortedAndFilteredProducts} />
+      
+      <ProductList products={sortedAndFilteredProducts} cart={cart} onAddToCart={cart.addItem} />
 
       <div className="catalog-page__forms-section">
         <h2 className="catalog-page__forms-title">Взаємодія з магазином</h2>
-        <div className="catalog-page__forms-grid">
-          <PromoCodeForm />
-        </div>
-        
-        <ReviewForm onReviewSubmit={(review) => {
-          setReviews((prev) => [...prev, review])
-          console.log('Новий відгук додано:', review)
-        }} />
+        {/* Форму промокоду прибрано, вона тепер в кошику */}
+        <ReviewForm onReviewSubmit={(review) => setReviews((prev) => [...prev, review])} />
         
         {reviews.length > 0 && (
           <p className="catalog-page__reviews-count">Додано відгуків: {reviews.length}</p>
