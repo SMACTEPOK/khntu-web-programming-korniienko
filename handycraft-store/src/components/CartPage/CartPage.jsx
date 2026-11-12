@@ -1,12 +1,23 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useState, useMemo } from 'react'
+import { useCartContext } from '../../context/useCartContext'
+import { useDeliveryCityContext } from '../../context/useDeliveryCityContext'
 import CartItem from '../CartItem/CartItem'
 import { formatPrice } from '../../utils/formatPrice'
 import './CartPage.css'
 
-export default function CartPage({ cart }) {
-  const { items, totalCount, totalPrice, isEmpty, updateQuantity, removeItem, clearCart, applyPromo, promoCode } = cart
+export default function CartPage() {
+  const { items, totalCount, totalPrice, isEmpty, updateQuantity, removeItem, clearCart, applyPromo, promoCode } = useCartContext()
+  const { city } = useDeliveryCityContext()
   const [inputCode, setInputCode] = useState('')
+
+  const groupedItems = useMemo(() => {
+    return items.reduce((acc, item) => {
+      const cat = item.category || 'Без категорії'
+      if (!acc[cat]) acc[cat] = []
+      acc[cat].push(item)
+      return acc
+    }, {})
+  }, [items])
 
   const handleApplyPromo = (e) => {
     e.preventDefault()
@@ -27,11 +38,24 @@ export default function CartPage({ cart }) {
     <section className="cart-page">
       <h2 className="cart-page__title">Кошик ({totalCount})</h2>
       
-      <ul className="cart-page__list">
-        {items.map((item) => (
-          <CartItem key={item.id} item={item} onQuantityChange={updateQuantity} onRemove={removeItem} />
-        ))}
-      </ul>
+      <div className="cart-page__grouped-list">
+        {Object.entries(groupedItems).map(([category, catItems]) => {
+          const categorySubtotal = catItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+          return (
+            <div key={category} className="cart-group">
+              <div className="cart-group__header">
+                <span>{category}</span>
+                <span>{formatPrice(categorySubtotal)}</span>
+              </div>
+              <ul className="cart-page__list">
+                {catItems.map((item) => (
+                  <CartItem key={item.id} item={item} onQuantityChange={updateQuantity} onRemove={removeItem} />
+                ))}
+              </ul>
+            </div>
+          )
+        })}
+      </div>
 
       <form className="cart-page__promo" onSubmit={handleApplyPromo}>
         <input 
@@ -45,25 +69,16 @@ export default function CartPage({ cart }) {
       {promoCode && <p className="cart-page__promo-active">Застосовано: {promoCode}</p>}
 
       <div className="cart-page__summary">
-        <p>Разом: <strong>{formatPrice(totalPrice)}</strong></p>
-        <button type="button" className="cart-page__clear" onClick={clearCart}>
-          Очистити кошик
-        </button>
+        <div className="cart-page__delivery">
+          <span>Доставка до:</span> <strong>{city}</strong>
+        </div>
+        <div className="cart-page__total-row">
+          <p>Разом: <strong>{formatPrice(totalPrice)}</strong></p>
+          <button type="button" className="cart-page__clear" onClick={clearCart}>
+            Очистити кошик
+          </button>
+        </div>
       </div>
     </section>
   )
-}
-
-CartPage.propTypes = {
-  cart: PropTypes.shape({
-    items: PropTypes.arrayOf(PropTypes.object).isRequired,
-    totalCount: PropTypes.number.isRequired,
-    totalPrice: PropTypes.number.isRequired,
-    isEmpty: PropTypes.bool.isRequired,
-    updateQuantity: PropTypes.func.isRequired,
-    removeItem: PropTypes.func.isRequired,
-    clearCart: PropTypes.func.isRequired,
-    applyPromo: PropTypes.func.isRequired,
-    promoCode: PropTypes.string,
-  }).isRequired,
 }

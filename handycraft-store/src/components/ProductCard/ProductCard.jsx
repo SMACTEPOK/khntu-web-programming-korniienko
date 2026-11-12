@@ -2,19 +2,32 @@ import PropTypes from 'prop-types'
 import { CATEGORIES } from '@config/categories'
 import { calculateDiscountedPrice } from '../../utils/calculateDiscountedPrice'
 import { formatPrice } from '../../utils/formatPrice'
+import { useCartContext } from '../../context/useCartContext'
+import { useNotificationContext } from '../../context/useNotificationContext'
 import './product-card.css'
 
 const PLACEHOLDER_IMAGE = '/src/assets/product-placeholder.svg'
 
-function ProductCard({ product, onAddToCart, cartQuantity, promoCode }) {
+function ProductCard({ product }) {
+  const { items, addItem, promoCode } = useCartContext()
+  const { addNotification } = useNotificationContext()
+
   const { name, price, image, category, stock = 0 } = product
   const imageSrc = image || PLACEHOLDER_IMAGE
   const isHandmade = category === CATEGORIES.WOOD
   const isAvailable = stock > 0
+
+  const cartItem = items.find((i) => i.id === product.id)
+  const cartQuantity = cartItem ? cartItem.quantity : 0
   const isMaxInCart = cartQuantity >= stock
 
   const finalPrice = calculateDiscountedPrice(price, category, promoCode)
   const hasDiscount = finalPrice < price
+
+  const handleAdd = () => {
+    addItem(product)
+    addNotification(`Товар "${name}" додано в кошик!`)
+  }
 
   return (
     <article className="product-card">
@@ -47,7 +60,7 @@ function ProductCard({ product, onAddToCart, cartQuantity, promoCode }) {
           type="button" 
           className="product-card__add-btn"
           disabled={!isAvailable || isMaxInCart}
-          onClick={() => onAddToCart(product)}
+          onClick={handleAdd}
         >
           {!isAvailable ? 'Немає' : (isMaxInCart ? 'Максимум' : 'До кошика')}
         </button>
@@ -58,9 +71,6 @@ function ProductCard({ product, onAddToCart, cartQuantity, promoCode }) {
 
 ProductCard.propTypes = {
   product: PropTypes.object.isRequired,
-  onAddToCart: PropTypes.func.isRequired,
-  cartQuantity: PropTypes.number.isRequired,
-  promoCode: PropTypes.string,
 }
 
 export default ProductCard

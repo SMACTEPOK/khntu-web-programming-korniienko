@@ -6,7 +6,7 @@ import ReviewForm from '../components/ReviewForm/ReviewForm'
 import { filterProducts } from '../utils/filterProducts'
 import './CatalogPage.css'
 
-function CatalogPage({ cart }) {
+function CatalogPage() {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -78,16 +78,12 @@ function CatalogPage({ cart }) {
       
       <p className="catalog-page__results-count">Знайдено товарів: {sortedAndFilteredProducts.length}</p>
       
-      <ProductList products={sortedAndFilteredProducts} cart={cart} onAddToCart={cart.addItem} />
+      <ProductList products={sortedAndFilteredProducts} />
 
       <div className="catalog-page__forms-section">
         <h2 className="catalog-page__forms-title">Взаємодія з магазином</h2>
-        {/* Форму промокоду прибрано, вона тепер в кошику */}
         <ReviewForm onReviewSubmit={(review) => setReviews((prev) => [...prev, review])} />
-        
-        {reviews.length > 0 && (
-          <p className="catalog-page__reviews-count">Додано відгуків: {reviews.length}</p>
-        )}
+        {reviews.length > 0 && <p className="catalog-page__reviews-count">Додано відгуків: {reviews.length}</p>}
       </div>
     </div>
   )

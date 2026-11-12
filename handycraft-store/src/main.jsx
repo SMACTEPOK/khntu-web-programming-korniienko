@@ -1,6 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
+import { CartProvider } from './context/CartProvider'
+import { DeliveryCityProvider } from './context/DeliveryCityProvider'
+import { NotificationProvider } from './context/NotificationProvider'
 import './index.css'
 
 async function enableMocking() {
@@ -14,7 +17,13 @@ async function enableMocking() {
 enableMocking().then(() => {
   createRoot(document.getElementById('root')).render(
     <StrictMode>
-      <App />
+      <CartProvider>
+        <DeliveryCityProvider>
+          <NotificationProvider>
+            <App />
+          </NotificationProvider>
+        </DeliveryCityProvider>
+      </CartProvider>
     </StrictMode>,
   )
 })

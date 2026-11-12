@@ -127,3 +127,5 @@
 .app-layout { display: grid; grid-template-columns: 1fr 350px; gap: 40px; padding: 40px 7%; background-color: #202020; }
 .app-sidebar { position: relative; }
 @media (max-width: 1024px) { .app-layout { grid-template-columns: 1fr; } }
+.header__controls { display: flex; align-items: center; gap: 16px; }
+.header__city-select { background-color: #111; color: #fff; border: 1px solid #555; padding: 8px 12px; font-family: var(--font-mono); font-size: 12px; outline: none; cursor: pointer; }
