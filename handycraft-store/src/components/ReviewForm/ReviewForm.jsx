@@ -2,10 +2,9 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { reviewSchema } from '../../schemas/reviewSchema'
-import './ReviewForm.css'
 
 function ReviewForm({ onReviewSubmit }) {
-  const [submitStatus, setSubmitStatus] = useState('idle') // idle, loading, success, error
+  const [submitStatus, setSubmitStatus] = useState('idle')
   const [serverError, setServerError] = useState('')
 
   const {
@@ -43,18 +42,18 @@ function ReviewForm({ onReviewSubmit }) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="review-form">
-      <h3 className="review-form__title">Залишити відгук</h3>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4 bg-surface p-6 border-2 border-border mt-10 max-w-lg">
+      <h3 className="font-mono text-white uppercase tracking-widest m-0 mb-4">Залишити відгук</h3>
 
-      <div className="review-form__group">
-        <label htmlFor="authorName" className="review-form__label">Ваше ім'я</label>
-        <input id="authorName" type="text" {...register('authorName')} className="review-form__input" />
-        {errors.authorName && <p role="alert" className="review-form__error">{errors.authorName.message}</p>}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="authorName" className="font-mono text-xs text-muted uppercase">Ваше ім'я</label>
+        <input id="authorName" type="text" {...register('authorName')} className="p-3 bg-background border-2 border-border text-white font-mono text-sm outline-none focus:border-accent" />
+        {errors.authorName && <p role="alert" className="text-red-400 font-mono text-xs m-0">{errors.authorName.message}</p>}
       </div>
 
-      <div className="review-form__group">
-        <label htmlFor="rating" className="review-form__label">Оцінка</label>
-        <select id="rating" {...register('rating')} defaultValue="" className="review-form__select">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="rating" className="font-mono text-xs text-muted uppercase">Оцінка</label>
+        <select id="rating" {...register('rating')} defaultValue="" className="p-3 bg-background border-2 border-border text-white font-mono text-sm outline-none focus:border-accent">
           <option value="" disabled>Оберіть оцінку</option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -62,27 +61,24 @@ function ReviewForm({ onReviewSubmit }) {
           <option value="4">4</option>
           <option value="5">5</option>
         </select>
-        {errors.rating && <p role="alert" className="review-form__error">{errors.rating.message}</p>}
+        {errors.rating && <p role="alert" className="text-red-400 font-mono text-xs m-0">{errors.rating.message}</p>}
       </div>
 
-      <div className="review-form__group">
-        <label htmlFor="reviewText" className="review-form__label">Текст відгуку</label>
-        <textarea id="reviewText" rows={4} {...register('reviewText')} className="review-form__textarea" />
-        {errors.reviewText && <p role="alert" className="review-form__error">{errors.reviewText.message}</p>}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="reviewText" className="font-mono text-xs text-muted uppercase">Текст відгуку</label>
+        <textarea id="reviewText" rows={4} {...register('reviewText')} className="p-3 bg-background border-2 border-border text-white font-mono text-sm outline-none focus:border-accent resize-y" />
+        {errors.reviewText && <p role="alert" className="text-red-400 font-mono text-xs m-0">{errors.reviewText.message}</p>}
       </div>
 
-      <button type="submit" disabled={isSubmitting} className="review-form__submit">
+      <button type="submit" disabled={isSubmitting} className="p-3 bg-[#111] text-white border-2 border-accent font-mono text-sm uppercase cursor-pointer hover:bg-[#444] disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-2">
         {isSubmitting ? 'Надсилання…' : 'Залишити відгук'}
       </button>
 
-      {/* Варіант 14: Відображення трьох станів сабміту */}
       {submitStatus === 'error' && (
-        <p role="alert" className="review-form__error review-form__error--server">
-          {serverError}
-        </p>
+        <p role="alert" className="p-3 bg-red-900/30 border border-red-900 text-red-400 font-mono text-xs m-0">{serverError}</p>
       )}
       {isSubmitSuccessful && submitStatus === 'success' && (
-        <p className="review-form__success">Дякуємо за ваш відгук!</p>
+        <p className="text-green-500 font-mono text-xs m-0">Дякуємо за ваш відгук!</p>
       )}
     </form>
   )

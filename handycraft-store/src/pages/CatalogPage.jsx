@@ -4,7 +4,6 @@ import SortControls from '../components/SortControls/SortControls'
 import ProductList from '../components/ProductList/ProductList'
 import ReviewForm from '../components/ReviewForm/ReviewForm'
 import { filterProducts } from '../utils/filterProducts'
-import './CatalogPage.css'
 
 function CatalogPage() {
   const [products, setProducts] = useState([])
@@ -66,24 +65,24 @@ function CatalogPage() {
 
   const hintText = products.length > 0 ? products[0].name : ''
 
-  if (isLoading) return <p className="catalog-page__status-message">Завантаження каталогу…</p>
-  if (error) return <p className="catalog-page__error-message" role="alert">Не вдалося завантажити каталог: {error}</p>
+  if (isLoading) return <p className="p-10 text-muted text-center uppercase tracking-widest font-mono animate-pulse">Завантаження каталогу…</p>
+  if (error) return <p role="alert" className="p-10 bg-red-900/20 border-2 border-red-900 text-red-400 text-center font-mono">Не вдалося завантажити каталог: {error}</p>
 
   return (
-    <div className="catalog-page">
-      <div className="catalog-page__controls">
+    <div className="w-full">
+      <div className="flex flex-wrap items-start gap-6 mb-8">
         <SearchPanel value={searchQuery} onChange={setSearchQuery} hint={hintText} />
         <SortControls sortConfig={sortConfig} onSortChange={setSortConfig} />
       </div>
       
-      <p className="catalog-page__results-count">Знайдено товарів: {sortedAndFilteredProducts.length}</p>
+      <p className="font-mono text-xs text-muted mb-10 tracking-wider uppercase">Знайдено товарів: {sortedAndFilteredProducts.length}</p>
       
-      <ProductList products={sortedAndFilteredProducts} />
+      <ProductList products={sortedAndFilteredProducts} searchQuery={debouncedQuery} />
 
-      <div className="catalog-page__forms-section">
-        <h2 className="catalog-page__forms-title">Взаємодія з магазином</h2>
+      <div className="mt-20 border-t-2 border-border pt-10">
+        <h2 className="font-mono text-2xl text-[#e0e0e0] uppercase mb-8">Взаємодія з магазином</h2>
         <ReviewForm onReviewSubmit={(review) => setReviews((prev) => [...prev, review])} />
-        {reviews.length > 0 && <p className="catalog-page__reviews-count">Додано відгуків: {reviews.length}</p>}
+        {reviews.length > 0 && <p className="font-mono text-sm text-green-500 mt-4">Додано відгуків: {reviews.length}</p>}
       </div>
     </div>
   )

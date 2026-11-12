@@ -1,16 +1,15 @@
 import PropTypes from 'prop-types'
 import ProductCard from '../ProductCard/ProductCard'
-import './ProductList.css'
 
-function ProductList({ products }) {
+function ProductList({ products, searchQuery }) {
   if (products.length === 0) {
-    return <p className="product-list__empty-message">За заданими умовами пошуку товарів не знайдено.</p>
+    return <p className="p-10 text-center text-muted font-mono border-2 border-dashed border-border mt-8">За заданими умовами пошуку товарів не знайдено.</p>
   }
 
   return (
-    <div className="product-list__grid">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-7 mt-8">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard key={product.id} product={product} searchQuery={searchQuery} />
       ))}
     </div>
   )
@@ -18,6 +17,7 @@ function ProductList({ products }) {
 
 ProductList.propTypes = {
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  searchQuery: PropTypes.string,
 }
 
 export default ProductList

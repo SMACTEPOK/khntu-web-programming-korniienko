@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import { sortConfigShape } from '../../utils/sortConfigShape'
-import './SortControls.css'
 
 function SortControls({ sortConfig, onSortChange }) {
   function handleFieldChange(event) {
@@ -13,14 +12,14 @@ function SortControls({ sortConfig, onSortChange }) {
   }
 
   return (
-    <div className="sort-controls">
-      <div className="sort-controls__group">
-        <label htmlFor="sort-field" className="sort-controls__label">
+    <div className="flex items-end gap-4 flex-wrap">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="sort-field" className="font-mono text-xs text-muted tracking-wider uppercase">
           Сортувати за:
         </label>
         <select
           id="sort-field"
-          className="sort-controls__select"
+          className="px-4 h-11 bg-background text-white border-2 border-border rounded-none font-mono text-sm outline-none cursor-pointer focus:border-accent"
           value={sortConfig.field}
           onChange={handleFieldChange}
         >
@@ -32,7 +31,7 @@ function SortControls({ sortConfig, onSortChange }) {
 
       <button
         type="button"
-        className="sort-controls__direction"
+        className="px-4 h-11 bg-surface text-white border-2 border-border rounded-none font-mono text-sm uppercase cursor-pointer hover:bg-[#444] hover:border-accent transition-colors"
         onClick={handleDirectionToggle}
       >
         {sortConfig.direction === 'asc' ? 'За зростанням ↑' : 'За спаданням ↓'}

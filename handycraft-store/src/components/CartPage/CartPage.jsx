@@ -3,7 +3,6 @@ import { useCartContext } from '../../context/useCartContext'
 import { useDeliveryCityContext } from '../../context/useDeliveryCityContext'
 import CartItem from '../CartItem/CartItem'
 import { formatPrice } from '../../utils/formatPrice'
-import './CartPage.css'
 
 export default function CartPage() {
   const { items, totalCount, totalPrice, isEmpty, updateQuantity, removeItem, clearCart, applyPromo, promoCode } = useCartContext()
@@ -27,27 +26,27 @@ export default function CartPage() {
 
   if (isEmpty) {
     return (
-      <section className="cart-page">
-        <h2 className="cart-page__title">Кошик</h2>
-        <p className="cart-page__empty">У кошику поки немає товарів.</p>
+      <section className="bg-surface border-2 border-border p-5 sticky top-5">
+        <h2 className="m-0 mb-4 text-white font-mono text-lg border-b-2 border-border pb-2 uppercase">Кошик</h2>
+        <p className="text-muted text-sm">У кошику поки немає товарів.</p>
       </section>
     )
   }
 
   return (
-    <section className="cart-page">
-      <h2 className="cart-page__title">Кошик ({totalCount})</h2>
+    <section className="bg-surface border-2 border-border p-5 sticky top-5">
+      <h2 className="m-0 mb-4 text-white font-mono text-lg border-b-2 border-border pb-2 uppercase">Кошик ({totalCount})</h2>
       
-      <div className="cart-page__grouped-list">
+      <div className="flex flex-col gap-5">
         {Object.entries(groupedItems).map(([category, catItems]) => {
           const categorySubtotal = catItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
           return (
-            <div key={category} className="cart-group">
-              <div className="cart-group__header">
+            <div key={category} className="bg-[#2a2a2a] border border-[#444]">
+              <div className="flex justify-between p-2 px-3 bg-[#333] text-muted font-mono text-[11px] uppercase border-b border-[#444]">
                 <span>{category}</span>
                 <span>{formatPrice(categorySubtotal)}</span>
               </div>
-              <ul className="cart-page__list">
+              <ul className="list-none p-0 m-0">
                 {catItems.map((item) => (
                   <CartItem key={item.id} item={item} onQuantityChange={updateQuantity} onRemove={removeItem} />
                 ))}
@@ -57,24 +56,25 @@ export default function CartPage() {
         })}
       </div>
 
-      <form className="cart-page__promo" onSubmit={handleApplyPromo}>
+      <form className="flex gap-2 mt-4 mb-4" onSubmit={handleApplyPromo}>
         <input 
           type="text" 
           placeholder="Промокод (CERAMICS15)" 
           value={inputCode} 
           onChange={e => setInputCode(e.target.value)} 
+          className="flex-1 bg-background border-2 border-border text-white p-2 font-mono text-xs outline-none focus:border-accent"
         />
-        <button type="submit">ОК</button>
+        <button type="submit" className="bg-[#111] border-2 border-border text-white p-2 px-3 cursor-pointer font-mono hover:border-accent">ОК</button>
       </form>
-      {promoCode && <p className="cart-page__promo-active">Застосовано: {promoCode}</p>}
+      {promoCode && <p className="text-green-500 text-[11px] mb-3 font-mono">Застосовано: {promoCode}</p>}
 
-      <div className="cart-page__summary">
-        <div className="cart-page__delivery">
-          <span>Доставка до:</span> <strong>{city}</strong>
+      <div className="flex flex-col gap-3 border-t-2 border-border pt-4 mt-4">
+        <div className="flex justify-between text-muted font-mono text-xs pb-3 border-b border-dashed border-border">
+          <span>Доставка до:</span> <strong className="text-white">{city}</strong>
         </div>
-        <div className="cart-page__total-row">
-          <p>Разом: <strong>{formatPrice(totalPrice)}</strong></p>
-          <button type="button" className="cart-page__clear" onClick={clearCart}>
+        <div className="flex justify-between items-center">
+          <p className="m-0 text-white font-mono text-base">Разом: <strong>{formatPrice(totalPrice)}</strong></p>
+          <button type="button" className="bg-transparent border-none text-muted hover:text-red-400 hover:underline cursor-pointer text-xs font-mono" onClick={clearCart}>
             Очистити кошик
           </button>
         </div>

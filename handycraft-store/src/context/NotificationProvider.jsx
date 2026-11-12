@@ -14,10 +14,9 @@ export function NotificationProvider({ children }) {
     }
   }, [])
 
-  const addNotification = useCallback((message) => {
+  const addNotification = useCallback((message, type = 'success') => {
     const id = Date.now()
-    setNotifications((prev) => [...prev, { id, message }])
-    // Автоматичне зникнення через 3 секунди
+    setNotifications((prev) => [...prev, { id, message, type }])
     timers.current[id] = setTimeout(() => {
       removeNotification(id)
     }, 3000)

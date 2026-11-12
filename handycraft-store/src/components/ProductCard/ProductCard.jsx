@@ -4,11 +4,11 @@ import { calculateDiscountedPrice } from '../../utils/calculateDiscountedPrice'
 import { formatPrice } from '../../utils/formatPrice'
 import { useCartContext } from '../../context/useCartContext'
 import { useNotificationContext } from '../../context/useNotificationContext'
-import './product-card.css'
+import { highlightMatch } from '../../utils/highlightMatch'
 
 const PLACEHOLDER_IMAGE = '/src/assets/product-placeholder.svg'
 
-function ProductCard({ product }) {
+function ProductCard({ product, searchQuery }) {
   const { items, addItem, promoCode } = useCartContext()
   const { addNotification } = useNotificationContext()
 
@@ -26,39 +26,41 @@ function ProductCard({ product }) {
 
   const handleAdd = () => {
     addItem(product)
-    addNotification(`Товар "${name}" додано в кошик!`)
+    addNotification(`Товар "${name}" додано в кошик!`, 'success')
   }
 
   return (
-    <article className="product-card">
-      <img className="product-card__image" src={imageSrc} alt={name} />
-      <div className="product-card__content">
-        <h3 className="product-card__name">{name}</h3>
+    <article className="flex flex-col w-full min-w-0 overflow-hidden bg-surface border-2 border-border rounded-none shadow-brutal transition-all duration-200 ease-linear hover:-translate-x-1 hover:-translate-y-1 hover:shadow-brutal-hover hover:border-accent">
+      <img className="block w-full h-[190px] object-cover grayscale contrast-125 border-b-2 border-border" src={imageSrc} alt={name} />
+      <div className="flex flex-col items-start gap-2.5 p-5 w-full flex-1">
+        <h3 className="m-0 text-white text-xl font-bold leading-tight uppercase min-h-[2.4em]">
+          {highlightMatch(name, searchQuery)}
+        </h3>
         
-        <div className="product-card__price-wrap">
+        <div className="flex items-center gap-2">
           {hasDiscount ? (
             <>
-              <p className="product-card__price product-card__price--old">{formatPrice(price)}</p>
-              <p className="product-card__price">{formatPrice(finalPrice)}</p>
+              <p className="m-0 text-muted font-mono text-sm line-through">{formatPrice(price)}</p>
+              <p className="m-0 text-text font-mono text-lg font-bold">{formatPrice(finalPrice)}</p>
             </>
           ) : (
-            <p className="product-card__price">{formatPrice(price)}</p>
+            <p className="m-0 text-text font-mono text-lg font-bold">{formatPrice(price)}</p>
           )}
         </div>
 
-        <p className="product-card__category">{category || 'Без категорії'}</p>
+        <p className="m-0 text-muted font-mono text-[11px] tracking-wider uppercase">{category || 'Без категорії'}</p>
         
-        <div className="product-card__badges">
-          <span className={`product-card__badge ${isAvailable ? 'product-card__badge--in' : 'product-card__badge--out'}`}>
+        <div className="flex flex-col items-start gap-2 mt-auto mb-2">
+          <span className={`px-2.5 py-1.5 bg-[#111] border text-[10px] font-bold tracking-wider uppercase font-mono ${isAvailable ? 'border-accent text-accent' : 'border-border text-muted'}`}>
             {isAvailable ? `В наявності: ${stock} шт.` : 'Немає в наявності'}
           </span>
-          {isHandmade && <span className="product-card__badge product-card__badge--handmade">Хендмейд</span>}
-          {cartQuantity > 0 && <span className="product-card__badge product-card__badge--incart">У кошику: {cartQuantity}</span>}
+          {isHandmade && <span className="px-2.5 py-1.5 bg-[#222] text-white border border-accent text-[10px] font-bold tracking-wider uppercase font-mono shadow-[3px_3px_0_#111]">Хендмейд</span>}
+          {cartQuantity > 0 && <span className="px-2.5 py-1.5 bg-[#444] text-white border border-white text-[10px] font-bold tracking-wider uppercase font-mono">У кошику: {cartQuantity}</span>}
         </div>
 
         <button 
           type="button" 
-          className="product-card__add-btn"
+          className="w-full mt-auto py-2.5 bg-[#111] text-white border-2 border-accent font-mono text-xs uppercase cursor-pointer hover:bg-[#444] disabled:border-border disabled:text-muted disabled:cursor-not-allowed transition-colors"
           disabled={!isAvailable || isMaxInCart}
           onClick={handleAdd}
         >
@@ -71,6 +73,7 @@ function ProductCard({ product }) {
 
 ProductCard.propTypes = {
   product: PropTypes.object.isRequired,
+  searchQuery: PropTypes.string,
 }
 
 export default ProductCard
