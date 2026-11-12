@@ -3,6 +3,7 @@ import SearchPanel from '../components/SearchPanel/SearchPanel'
 import SortControls from '../components/SortControls/SortControls'
 import ProductList from '../components/ProductList/ProductList'
 import ReviewForm from '../components/ReviewForm/ReviewForm'
+import ReviewList from '../components/ReviewList/ReviewList'
 import { filterProducts } from '../utils/filterProducts'
 
 function CatalogPage() {
@@ -70,7 +71,7 @@ function CatalogPage() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap items-start gap-6 mb-8">
+      <div className="flex flex-col md:flex-row md:items-end gap-4 mb-8">
         <SearchPanel value={searchQuery} onChange={setSearchQuery} hint={hintText} />
         <SortControls sortConfig={sortConfig} onSortChange={setSortConfig} />
       </div>
@@ -81,8 +82,11 @@ function CatalogPage() {
 
       <div className="mt-20 border-t-2 border-border pt-10">
         <h2 className="font-mono text-2xl text-[#e0e0e0] uppercase mb-8">Взаємодія з магазином</h2>
-        <ReviewForm onReviewSubmit={(review) => setReviews((prev) => [...prev, review])} />
-        {reviews.length > 0 && <p className="font-mono text-sm text-green-500 mt-4">Додано відгуків: {reviews.length}</p>}
+        
+        <div className="flex flex-col gap-10">
+          <ReviewForm onReviewSubmit={(review) => setReviews((prev) => [...prev, review])} />
+          <ReviewList reviews={reviews} />
+        </div>
       </div>
     </div>
   )

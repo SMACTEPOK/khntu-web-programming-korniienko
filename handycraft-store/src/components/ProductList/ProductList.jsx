@@ -7,7 +7,7 @@ function ProductList({ products, searchQuery }) {
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-7 mt-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mt-8">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} searchQuery={searchQuery} />
       ))}
