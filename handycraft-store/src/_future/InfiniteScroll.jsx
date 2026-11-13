@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const generateItems = (page) => Array.from({ length: 20 }, (_, i) => ({
   id: page * 20 + i,

@@ -1,4 +1,3 @@
-import React, { useState, useRef } from 'react';
 
 export function SwipeGesture() {
   const [gesture, setGesture] = useState('');

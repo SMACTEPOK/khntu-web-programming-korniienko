@@ -6,7 +6,7 @@ import prettier from 'eslint-config-prettier'
 
 export default [
   {
-    ignores: ['dist', 'coverage', 'public'], // Додано 'public' для ігнорування згенерованих файлів
+    ignores: ['dist', 'coverage', 'public', 'src/_future'], // Додано 'public' для ігнорування згенерованих файлів
   },
   {
     files: ['**/*.{js,jsx}'],

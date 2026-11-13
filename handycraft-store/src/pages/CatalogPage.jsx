@@ -67,11 +67,12 @@ function CatalogPage() {
   const hintText = products.length > 0 ? products[0].name : ''
 
   if (isLoading) return <p className="p-10 text-muted text-center uppercase tracking-widest font-mono animate-pulse">Завантаження каталогу…</p>
-  if (error) return <p role="alert" className="p-10 bg-red-900/20 border-2 border-red-900 text-red-400 text-center font-mono">Не вдалося завантажити каталог: {error}</p>
+  if (error) return <p role="alert" className="p-10 bg-[#2a1111] border-2 border-danger text-danger text-center font-mono">Не вдалося завантажити каталог: {error}</p>
 
   return (
     <div className="w-full">
-      <div className="flex flex-col md:flex-row md:items-end gap-4 mb-8">
+      {/* ВИРІВНЮВАННЯ ПО ВЕРХНЬОМУ КРАЮ (items-start) */}
+      <div className="flex flex-col md:flex-row md:items-start gap-6 mb-8 w-full">
         <SearchPanel value={searchQuery} onChange={setSearchQuery} hint={hintText} />
         <SortControls sortConfig={sortConfig} onSortChange={setSortConfig} />
       </div>

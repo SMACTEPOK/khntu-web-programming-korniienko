@@ -6,14 +6,14 @@ function SearchPanel({ value, onChange, hint }) {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-[350px] w-full">
+    <div className="flex flex-col gap-2 w-full md:max-w-[400px]">
       <label htmlFor="catalog-search" className="font-mono text-xs text-muted tracking-wider uppercase">
         Пошук товару
       </label>
       <input
         id="catalog-search"
         type="text"
-        className="px-4 h-11 bg-background text-white border-2 border-border rounded-none font-mono text-sm outline-none focus:border-accent transition-colors placeholder:text-muted"
+        className="px-4 h-11 bg-background text-white border-2 border-border rounded-none font-mono text-sm outline-none transition-colors duration-200 focus:border-accent focus:bg-surface placeholder:text-muted w-full"
         placeholder="Введіть назву товару..."
         value={value}
         onChange={handleInputChange}

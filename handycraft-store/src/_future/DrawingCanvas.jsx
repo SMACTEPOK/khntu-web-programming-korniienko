@@ -1,4 +1,3 @@
-import React, { useRef, useState, useEffect } from 'react';
 
 export function DrawingCanvas() {
   const canvasRef = useRef(null);

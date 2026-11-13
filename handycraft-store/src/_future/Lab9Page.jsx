@@ -1,4 +1,3 @@
-import React from 'react';
 import { KeyboardShortcuts } from '../components/KeyboardShortcuts';
 import { KanbanBoard } from '../components/KanbanBoard';
 import { SwipeGesture } from '../components/SwipeGesture';

@@ -11,7 +11,7 @@ import DesignSystemPreview from './pages/DesignSystemPreview'
 import { Button } from './components/ui/Button'
 
 function AppContent() {
-  const [showPreview, setShowPreview] = useState(true) // true для скриншотів
+  const [showPreview, setShowPreview] = useState(false) // false - показуємо каталог
   const { totalCount } = useCartContext()
   const { city, setCity, cities } = useDeliveryCityContext()
 
@@ -44,7 +44,7 @@ function AppContent() {
                 {cities.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
               <div className="font-mono text-sm text-muted bg-[#222] p-2 px-4 border border-border">
-                У кошику: {totalCount}
+                У кошику: <span key={totalCount} className="inline-block animate-badge-pop font-bold text-white">{totalCount}</span>
               </div>
               <Button variant="secondary" onClick={() => setShowPreview(true)} className="hidden md:flex">
                 UI Kit

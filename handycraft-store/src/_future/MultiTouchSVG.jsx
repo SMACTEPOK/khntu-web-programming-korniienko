@@ -1,4 +1,3 @@
-import React, { useState, useRef } from 'react';
 
 export function MultiTouchSVG() {
   const [transform, setTransform] = useState({ x: 0, y: 0, scale: 1, rotation: 0 });

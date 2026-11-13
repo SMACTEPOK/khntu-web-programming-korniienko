@@ -10,7 +10,7 @@ export function Input({ label, hint, error, as: Control = "input", id, className
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined
 
   return (
-    <div className={cx("flex flex-col gap-1.5 w-full", className)}>
+    <div className={cx("flex flex-col gap-1.5 w-full", className, error && "animate-shake")}>
       <label htmlFor={controlId} className="text-xs font-mono text-muted uppercase tracking-wider">
         {label}
       </label>
@@ -27,7 +27,11 @@ export function Input({ label, hint, error, as: Control = "input", id, className
         )}
         {...rest}
       />
-      {error && <p id={errorId} role="alert" className="text-[11px] font-mono text-danger mt-1">{error}</p>}
+      {error && (
+        <p id={errorId} role="alert" className="text-[11px] font-mono text-danger mt-1 animate-fade-in">
+          {error}
+        </p>
+      )}
     </div>
   )
 }
