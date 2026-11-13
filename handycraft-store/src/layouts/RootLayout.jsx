@@ -2,6 +2,7 @@ import { NavLink, Outlet, useNavigation } from 'react-router'
 import { useCartContext } from '../context/useCartContext'
 import { useDeliveryCityContext } from '../context/useDeliveryCityContext'
 import NotificationToast from '../components/NotificationToast/NotificationToast'
+import DevMockPanel from '../components/DevMockPanel'
 
 const navLinkClass = ({ isActive }) => {
   const base = "font-mono text-xs uppercase tracking-wider px-3 py-2 border-2 transition-colors"
@@ -45,7 +46,6 @@ export default function RootLayout() {
         </div>
       </header>
 
-      {/* Варіант 14: Плавне згасання Outlet */}
       <main 
         className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-10 flex-1 transition-opacity duration-300 motion-reduce:transition-none ${
           isLoading ? 'opacity-50' : 'opacity-100'
@@ -62,7 +62,9 @@ export default function RootLayout() {
           </div>
         </div>
       </footer>
+
       <NotificationToast />
+      {import.meta.env.DEV && <DevMockPanel />}
     </div>
   )
 }

@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import ProductList from '../components/ProductList/ProductList'
+import Loader from '../components/Loader'
+import ErrorMessage from '../components/ErrorMessage'
+import { getErrorMessage } from '../utils/getErrorMessage'
+import { useProducts } from '../hooks/useProducts'
 
 const CATEGORY_MAP = {
   'ceramics': 'Кераміка',
@@ -10,24 +14,25 @@ const CATEGORY_MAP = {
 
 export default function CategoryPage() {
   const { categorySlug } = useParams()
-  const [products, setProducts] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  // Отримуємо правильну назву категорії для фільтрації
+  const { status, products, error, retry } = useProducts()
   const categoryName = CATEGORY_MAP[categorySlug] || categorySlug
 
-  useEffect(() => {
-    let isActive = true
-    fetch('/api/products')
-      .then(res => res.json())
-      .then(data => {
-        if (isActive) {
-          setProducts(data.filter(p => p.category === categoryName))
-          setIsLoading(false)
-        }
-      })
-    return () => { isActive = false }
-  }, [categoryName])
+  let content
+
+  if (status === 'loading') {
+    content = <Loader label="Завантаження категорії…" />
+  } else if (status === 'error') {
+    content = (
+      <ErrorMessage
+        title="Не вдалося завантажити категорію"
+        message={getErrorMessage(error)}
+        onRetry={retry}
+      />
+    )
+  } else {
+    const filtered = products.filter(p => p.category === categoryName)
+    content = <ProductList products={filtered} />
+  }
 
   return (
     <section>
@@ -35,7 +40,7 @@ export default function CategoryPage() {
         <Link to="/" className="hover:text-accent underline">Каталог</Link> / <span className="text-white">{categoryName}</span>
       </nav>
       <h1 className="mb-8 text-3xl font-bold text-white uppercase border-b-2 border-border pb-4">Категорія: {categoryName}</h1>
-      {isLoading ? <p className="text-muted font-mono">Завантаження...</p> : <ProductList products={products} />}
+      {content}
     </section>
   )
 }

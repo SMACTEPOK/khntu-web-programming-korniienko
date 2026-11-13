@@ -1,11 +1,14 @@
 import { Link, useLoaderData } from 'react-router'
+import { useReviews } from '../hooks/useReviews'
 import { useCartContext } from '../context/useCartContext'
 import { formatPrice } from '../utils/formatPrice'
 import { Button } from '../components/ui/Button'
+import Loader from '../components/Loader'
 
 export default function ProductPage() {
   const product = useLoaderData()
   const { addItem } = useCartContext()
+  const { reviews, isLoading, error } = useReviews(product.id)
 
   return (
     <article className="grid gap-8 md:grid-cols-2 bg-surface border-2 border-border p-6 shadow-brutal">
@@ -23,14 +26,36 @@ export default function ProductPage() {
         <p className="text-muted font-mono text-sm leading-relaxed">{product.category}</p>
         
         <div className="mt-auto pt-6">
-          <Button 
-            onClick={() => addItem(product)} 
-            disabled={product.stock <= 0}
-            className="w-full"
-          >
+          <Button onClick={() => addItem(product)} disabled={product.stock <= 0} className="w-full">
             {product.stock > 0 ? "Додати в кошик" : "Немає в наявності"}
           </Button>
         </div>
+      </div>
+
+      {/* Варіант 9 + 14: Відгуки через хук */}
+      <div className="md:col-span-2 mt-8 border-t-2 border-border pt-6">
+        <h3 className="text-lg font-mono text-white uppercase mb-4">Відгуки покупців</h3>
+        
+        {isLoading && <Loader label="Завантаження відгуків..." />}
+        {error && <p className="text-danger font-mono text-sm">Не вдалося завантажити відгуки.</p>}
+        
+        {!isLoading && !error && reviews.length === 0 && (
+          <p className="text-muted font-mono text-sm">Ще немає відгуків для цього товару.</p>
+        )}
+
+        {!isLoading && !error && reviews.length > 0 && (
+          <ul className="flex flex-col gap-4">
+            {reviews.map(r => (
+              <li key={r.id} className="bg-background border border-border p-4">
+                <div className="flex justify-between mb-2">
+                  <span className="font-bold text-white font-mono text-sm uppercase">{r.author}</span>
+                  <span className="text-accent font-mono text-xs">{'★'.repeat(r.rating)}</span>
+                </div>
+                <p className="text-muted font-mono text-sm">{r.text}</p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </article>
   )

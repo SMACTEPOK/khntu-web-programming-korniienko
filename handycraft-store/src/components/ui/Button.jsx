@@ -6,7 +6,7 @@ const BASE = "inline-flex items-center justify-center gap-2 rounded-control font
 const VARIANTS = {
   primary: "bg-[#111] text-white border-2 border-accent hover:bg-surface hover:shadow-brutal active:translate-y-0.5",
   secondary: "bg-surface text-text border-2 border-border hover:border-accent hover:text-white",
-  danger: "bg-[#2a1111] text-danger border-2 border-danger hover:bg-danger hover:text-background",
+  danger: "bg-[#1c1414] text-[#d96b6b] border-2 border-[#7a2a2a] hover:bg-[#7a2a2a] hover:text-white",
 }
 
 const SIZES = {
