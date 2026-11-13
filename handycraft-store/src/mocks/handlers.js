@@ -1,30 +1,27 @@
 import { http, HttpResponse, delay } from 'msw'
 import { products } from './data/products'
-
-const SIMULATE_ERROR = false
+import { mockOrders } from './data/orders'
 
 export const handlers = [
   http.get('/api/products', async () => {
-    await delay(600)
-    if (SIMULATE_ERROR) {
-      return HttpResponse.json({ message: 'Внутрішня помилка сервера' }, { status: 500 })
-    }
+    await delay(400)
     return HttpResponse.json(products)
   }),
-
-  // Обробник для форми відгуку (Варіант 14)
-  http.post('/api/reviews', async ({ request }) => {
-    await delay(1000) // Імітація затримки відправки
-    const newReview = await request.json()
-
-    // Імітуємо помилку сервера, якщо оцінка 1
-    if (newReview.rating === 1) {
-      return HttpResponse.json(
-        { message: 'Сервер відхилив відгук з оцінкою 1' },
-        { status: 500 }
-      )
+  // Обробник для одного товару
+  http.get('/api/products/:id', async ({ params }) => {
+    await delay(400)
+    const product = products.find((item) => String(item.id) === String(params.id))
+    if (!product) {
+      return HttpResponse.json({ message: 'Товар не знайдено' }, { status: 404 })
     }
-
-    return HttpResponse.json({ ...newReview, id: Date.now() }, { status: 201 })
+    return HttpResponse.json(product)
+  }),
+  http.get('/api/orders/:id', async ({ params }) => {
+    await delay(2000) 
+    const order = mockOrders.find((o) => o.id === params.id)
+    if (!order) {
+      return HttpResponse.json({ message: 'Замовлення не знайдено' }, { status: 404 })
+    }
+    return HttpResponse.json(order)
   }),
 ]

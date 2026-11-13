@@ -3,35 +3,20 @@ import SearchPanel from '../components/SearchPanel/SearchPanel'
 import SortControls from '../components/SortControls/SortControls'
 import ProductList from '../components/ProductList/ProductList'
 import ReviewForm from '../components/ReviewForm/ReviewForm'
-import ReviewList from '../components/ReviewList/ReviewList'
 import { filterProducts } from '../utils/filterProducts'
 
-function CatalogPage() {
+export default function CatalogPage() {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [reviews, setReviews] = useState([])
-
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery)
   const [sortConfig, setSortConfig] = useState({ field: 'category', direction: 'asc' })
 
   useEffect(() => {
     let isActive = true
-    async function loadProducts() {
-      setIsLoading(true)
-      try {
-        const response = await fetch('/api/products')
-        if (!response.ok) throw new Error(`Сервер повернув статус ${response.status}`)
-        const data = await response.json()
-        if (isActive) setProducts(data)
-      } catch (err) {
-        if (isActive) setError(err.message)
-      } finally {
-        if (isActive) setIsLoading(false)
-      }
-    }
-    loadProducts()
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(data => { if (isActive) { setProducts(data); setIsLoading(false) } })
     return () => { isActive = false }
   }, [])
 
@@ -67,11 +52,9 @@ function CatalogPage() {
   const hintText = products.length > 0 ? products[0].name : ''
 
   if (isLoading) return <p className="p-10 text-muted text-center uppercase tracking-widest font-mono animate-pulse">Завантаження каталогу…</p>
-  if (error) return <p role="alert" className="p-10 bg-[#2a1111] border-2 border-danger text-danger text-center font-mono">Не вдалося завантажити каталог: {error}</p>
 
   return (
     <div className="w-full">
-      {/* ВИРІВНЮВАННЯ ПО ВЕРХНЬОМУ КРАЮ (items-start) */}
       <div className="flex flex-col md:flex-row md:items-start gap-6 mb-8 w-full">
         <SearchPanel value={searchQuery} onChange={setSearchQuery} hint={hintText} />
         <SortControls sortConfig={sortConfig} onSortChange={setSortConfig} />
@@ -83,14 +66,8 @@ function CatalogPage() {
 
       <div className="mt-20 border-t-2 border-border pt-10">
         <h2 className="font-mono text-2xl text-[#e0e0e0] uppercase mb-8">Взаємодія з магазином</h2>
-        
-        <div className="flex flex-col gap-10">
-          <ReviewForm onReviewSubmit={(review) => setReviews((prev) => [...prev, review])} />
-          <ReviewList reviews={reviews} />
-        </div>
+        <ReviewForm onReviewSubmit={() => {}} />
       </div>
     </div>
   )
 }
-
-export default CatalogPage

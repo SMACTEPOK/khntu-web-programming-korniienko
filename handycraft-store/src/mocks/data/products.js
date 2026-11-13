@@ -2,7 +2,7 @@ import { CATEGORIES } from '../../config/categories'
 
 export const products = [
   {
-    id: "p-001",
+    id: 1,
     name: "Гончарна ваза «Лаванда»",
     price: 450,
     image: "/src/assets/product-placeholder.svg",
@@ -10,7 +10,7 @@ export const products = [
     stock: 12
   },
   {
-    id: "p-002",
+    id: 2,
     name: "В'язаний плед «Осінь»",
     price: 1200,
     image: "/src/assets/product-placeholder.svg",
@@ -18,7 +18,7 @@ export const products = [
     stock: 4
   },
   {
-    id: "p-003",
+    id: 3,
     name: "Дерев'яна шкатулка",
     price: 680,
     image: "/src/assets/product-placeholder.svg",
@@ -26,7 +26,7 @@ export const products = [
     stock: 0
   },
   {
-    id: "p-004",
+    id: 4,
     name: "Керамічна тарілка з розписом",
     price: 320,
     image: "/src/assets/product-placeholder.svg",
@@ -34,7 +34,7 @@ export const products = [
     stock: 8
   },
   {
-    id: "p-005",
+    id: 5,
     name: "Свічка соєва «Лаванда і м'ята»",
     price: 180,
     image: "/src/assets/product-placeholder.svg",
