@@ -1,22 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
-
-@theme {
-  --color-background: #1b1b1b;
-  --color-surface: #292929;
-  --color-concrete: #383838;
-  --color-border: #626262;
-  --color-text: #d0d0d0;
-  --color-muted: #898989;
-  --color-white: #ededed;
-  --color-accent: #a5a5a5;
-  
-  --font-sans: 'Space Grotesk', Arial, sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
-  
-  --shadow-brutal: 8px 8px 0 #111;
-  --shadow-brutal-hover: 12px 12px 0 #111;
-}
+@import "./styles/tokens.css";
 
 @layer base {
   body {

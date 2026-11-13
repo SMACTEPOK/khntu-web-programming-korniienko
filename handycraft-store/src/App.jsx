@@ -1,13 +1,33 @@
+import { useState } from 'react'
+import { CartProvider } from './context/CartProvider'
+import { DeliveryCityProvider } from './context/DeliveryCityProvider'
+import { NotificationProvider } from './context/NotificationProvider'
 import { useCartContext } from './context/useCartContext'
 import { useDeliveryCityContext } from './context/useDeliveryCityContext'
 import CatalogPage from './pages/CatalogPage'
 import CartPage from './components/CartPage/CartPage'
 import NotificationToast from './components/NotificationToast/NotificationToast'
-import BreakpointBadge from './components/dev/BreakpointBadge'
+import DesignSystemPreview from './pages/DesignSystemPreview'
+import { Button } from './components/ui/Button'
 
-function App() {
+function AppContent() {
+  const [showPreview, setShowPreview] = useState(true) // true для скриншотів
   const { totalCount } = useCartContext()
   const { city, setCity, cities } = useDeliveryCityContext()
+
+  if (showPreview) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="bg-[#111] p-4 text-center border-b-2 border-border sticky top-0 z-50">
+          <Button variant="secondary" onClick={() => setShowPreview(false)}>
+            ← Повернутися до Каталогу
+          </Button>
+        </div>
+        <DesignSystemPreview />
+        <NotificationToast />
+      </div>
+    )
+  }
 
   return (
     <main className="flex flex-col min-h-screen bg-background">
@@ -26,6 +46,9 @@ function App() {
               <div className="font-mono text-sm text-muted bg-[#222] p-2 px-4 border border-border">
                 У кошику: {totalCount}
               </div>
+              <Button variant="secondary" onClick={() => setShowPreview(true)} className="hidden md:flex">
+                UI Kit
+              </Button>
             </div>
           </div>
           <p className="mt-4 text-muted font-mono text-xs tracking-wider uppercase">Магазин унікальних товарів ручної роботи</p>
@@ -65,9 +88,18 @@ function App() {
       </footer>
 
       <NotificationToast />
-      {import.meta.env.DEV && <BreakpointBadge />}
     </main>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <CartProvider>
+      <DeliveryCityProvider>
+        <NotificationProvider>
+          <AppContent />
+        </NotificationProvider>
+      </DeliveryCityProvider>
+    </CartProvider>
+  )
+}

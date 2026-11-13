@@ -10,7 +10,8 @@
     "lint:strict": "eslint -c eslint.strict.config.js .",
     "format": "prettier --write .",
     "preview": "vite preview",
-    "check:cart": "node scripts/check-cart-reducer.mjs"
+    "check:cart": "node scripts/check-cart-reducer.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.6",

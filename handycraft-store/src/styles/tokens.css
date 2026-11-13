@@ -1,0 +1,20 @@
+@theme {
+  --font-sans: 'Space Grotesk', Arial, sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+
+  --color-background: #1b1b1b;
+  --color-surface: #292929;
+  --color-concrete: #383838;
+  --color-border: #7a7a7a;
+  --color-text: #d0d0d0;
+  --color-muted: #898989;
+  --color-white: #ededed;
+  --color-accent: #a5a5a5;
+  
+  --color-danger: #ff6666;
+  --color-success: #4ecd4c;
+
+  --shadow-brutal: 6px 6px 0 #111;
+  --shadow-brutal-hover: 8px 8px 0 #111;
+  --radius-control: 0px;
+}
