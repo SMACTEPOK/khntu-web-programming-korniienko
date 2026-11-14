@@ -1,7 +1,8 @@
-import { NavLink, Outlet, useNavigation } from 'react-router'
+import { NavLink, Outlet, useNavigation, Link } from 'react-router'
 import { useCartStore } from '../store/cartStore'
 import { selectTotalCount } from '../store/cartSelectors'
 import { useDeliveryCityContext } from '../context/useDeliveryCityContext'
+import { useAuth } from '../context/AuthContext'
 import NotificationToast from '../components/NotificationToast/NotificationToast'
 
 const navLinkClass = ({ isActive }) => {
@@ -14,6 +15,7 @@ const navLinkClass = ({ isActive }) => {
 export default function RootLayout() {
   const totalCount = useCartStore(selectTotalCount)
   const { city, setCity, cities } = useDeliveryCityContext()
+  const { isAuthenticated, logout } = useAuth()
   const navigation = useNavigation()
   const isLoading = navigation.state === 'loading'
 
@@ -23,7 +25,7 @@ export default function RootLayout() {
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
             <h1 className="m-0 text-[clamp(36px,7vw,76px)] font-bold leading-[0.95] tracking-[-4px] uppercase">
-              <NavLink to="/" end className="hover:text-accent transition-colors">HandyCraft Store</NavLink>
+              <Link to="/" className="hover:text-accent transition-colors">HandyCraft Store</Link>
             </h1>
             <div className="flex items-center gap-4">
               <select className="bg-[#111] text-white border border-border p-2 px-3 font-mono text-xs outline-none cursor-pointer focus:border-accent" value={city} onChange={(e) => setCity(e.target.value)}>
@@ -34,11 +36,24 @@ export default function RootLayout() {
               </NavLink>
             </div>
           </div>
-          <nav className="flex flex-wrap gap-2 mt-6 border-t border-border/50 pt-4">
+          <nav className="flex flex-wrap gap-2 mt-6 border-t border-border/50 pt-4 items-center">
             <NavLink to="/" end className={navLinkClass}>Каталог</NavLink>
             <NavLink to="/category/ceramics" className={navLinkClass}>Кераміка</NavLink>
             <NavLink to="/category/textile" className={navLinkClass}>Текстиль</NavLink>
             <NavLink to="/category/wood" className={navLinkClass}>Дерево</NavLink>
+            
+            <div className="ml-auto flex gap-2">
+              {isAuthenticated ? (
+                <>
+                  <NavLink to="/orders" className={navLinkClass}>Мої замовлення</NavLink>
+                  <button type="button" onClick={logout} className="font-mono text-xs uppercase tracking-wider px-3 py-2 border-2 border-transparent text-danger hover:border-danger transition-colors cursor-pointer bg-transparent">
+                    Вийти
+                  </button>
+                </>
+              ) : (
+                <NavLink to="/login" className={navLinkClass}>Увійти</NavLink>
+              )}
+            </div>
           </nav>
         </div>
       </header>

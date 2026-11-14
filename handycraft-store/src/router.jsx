@@ -7,6 +7,9 @@ import OrderPage from "./pages/OrderPage"
 import NotFoundPage from "./pages/NotFoundPage"
 import CartPage from "./components/CartPage/CartPage"
 import RouteErrorBoundary from "./components/RouteErrorBoundary/RouteErrorBoundary"
+import ProtectedRoute from "./components/ProtectedRoute"
+import LoginPage from "./pages/LoginPage"
+import OrdersPage from "./pages/OrdersPage"
 import { productLoader } from "./loaders/productLoader"
 import { orderLoader } from "./loaders/orderLoader"
 
@@ -33,6 +36,13 @@ export const router = createBrowserRouter([
             hydrateFallbackElement: <p className="text-center font-mono text-muted py-10">Завантаження замовлення…</p>
           },
           { path: "cart", element: <CartPage /> },
+          { path: "login", element: <LoginPage /> },
+          {
+            element: <ProtectedRoute />,
+            children: [
+              { path: "orders", element: <OrdersPage /> }
+            ]
+          },
           { path: "*", element: <NotFoundPage /> }
         ]
       }

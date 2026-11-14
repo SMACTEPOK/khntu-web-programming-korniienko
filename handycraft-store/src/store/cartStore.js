@@ -21,7 +21,7 @@ export const useCartStore = create((set) => ({
           ...state.items,
           {
             id: product.id,
-            title: product.name, // адаптовано під наші мок-дані
+            title: product.name,
             price: product.price,
             image: product.image,
             category: product.category,
@@ -32,7 +32,6 @@ export const useCartStore = create((set) => ({
       }
     }),
 
-  // Варіант 4: Окремі дії для збільшення та зменшення
   incrementItem: (id) =>
     set((state) => ({
       items: state.items.map((item) =>
@@ -56,17 +55,6 @@ export const useCartStore = create((set) => ({
       }
     }),
 
-  // Залишаємо для сумісності з іншими компонентами
-  updateQuantity: (id, quantity) =>
-    set((state) => ({
-      items:
-        quantity <= 0
-          ? state.items.filter((item) => item.id !== id)
-          : state.items.map((item) =>
-              item.id === id ? { ...item, quantity } : item
-            ),
-    })),
-
   removeItem: (id) =>
     set((state) => ({
       items: state.items.filter((item) => item.id !== id),
@@ -76,4 +64,26 @@ export const useCartStore = create((set) => ({
 
   applyPromo: (code) =>
     set({ promoCode: code === 'CERAMICS15' ? code : null }),
+
+  // Варіант 14: Завантаження кошика конкретного користувача
+  loadCart: (userId) => {
+    try {
+      const saved = localStorage.getItem(`cart:${userId}`)
+      if (saved) {
+        set({ items: JSON.parse(saved) })
+      } else {
+        set({ items: [] })
+      }
+    } catch {
+      set({ items: [] })
+    }
+  },
+
+  // Варіант 14: Збереження кошика конкретного користувача
+  saveCart: (userId) => {
+    try {
+      const { items } = useCartStore.getState()
+      localStorage.setItem(`cart:${userId}`, JSON.stringify(items))
+    } catch { /* ignore */ }
+  }
 }))

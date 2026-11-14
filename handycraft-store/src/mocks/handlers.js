@@ -1,6 +1,7 @@
 import { http, HttpResponse, delay } from 'msw'
 import { products } from './data/products'
 import { mockOrders } from './data/orders'
+import { authHandlers } from './authHandlers'
 
 const STORAGE_KEY = 'handycraft-mock'
 
@@ -18,12 +19,11 @@ export const mockControl = loadMockControl()
 export function persistMockControl() {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(mockControl))
-  } catch {
-    // Ignore sessionStorage errors
-  }
+  } catch { /* ignore */ }
 }
 
 export const handlers = [
+  ...authHandlers,
   http.get('/api/products', async () => {
     await delay(mockControl.delayMs)
     if (mockControl.failuresLeft > 0) {
