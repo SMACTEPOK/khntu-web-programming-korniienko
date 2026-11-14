@@ -18,7 +18,9 @@ export const mockControl = loadMockControl()
 export function persistMockControl() {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(mockControl))
-  } catch (e) {}
+  } catch {
+    // Ignore sessionStorage errors
+  }
 }
 
 export const handlers = [

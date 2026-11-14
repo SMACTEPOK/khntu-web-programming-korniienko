@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchReviews } from '../api/products'
 
 export function useReviews(productId) {
@@ -8,6 +8,9 @@ export function useReviews(productId) {
 
   useEffect(() => {
     const controller = new AbortController()
+    
+    // Свідомо скидаємо стан перед новим запитом (потрібно для коректного UI).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoading(true)
     setError(null)
     

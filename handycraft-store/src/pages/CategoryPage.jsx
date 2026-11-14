@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import ProductList from '../components/ProductList/ProductList'
 import Loader from '../components/Loader'
