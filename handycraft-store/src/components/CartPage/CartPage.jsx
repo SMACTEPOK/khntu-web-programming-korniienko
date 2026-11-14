@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react'
-import { useCartContext } from '../../context/useCartContext'
+import { useCart } from '../../hooks/useCart'
 import { useDeliveryCityContext } from '../../context/useDeliveryCityContext'
 import CartItem from '../CartItem/CartItem'
+import CartItemNamesList from '../CartItemNamesList/CartItemNamesList'
 import { formatPrice } from '../../utils/formatPrice'
 
 export default function CartPage() {
-  const { items, totalCount, totalPrice, isEmpty, updateQuantity, removeItem, clearCart, applyPromo, promoCode } = useCartContext()
+  const { items, totalCount, totalPrice, isEmpty, incrementItem, decrementItem, removeItem, clearCart, applyPromo, promoCode } = useCart()
   const { city } = useDeliveryCityContext()
   const [inputCode, setInputCode] = useState('')
 
@@ -48,7 +49,7 @@ export default function CartPage() {
               </div>
               <ul className="list-none p-0 m-0">
                 {catItems.map((item) => (
-                  <CartItem key={item.id} item={item} onQuantityChange={updateQuantity} onRemove={removeItem} />
+                  <CartItem key={item.id} item={item} onIncrement={incrementItem} onDecrement={decrementItem} onRemove={removeItem} />
                 ))}
               </ul>
             </div>
@@ -57,16 +58,12 @@ export default function CartPage() {
       </div>
 
       <form className="flex gap-2 mt-4 mb-4" onSubmit={handleApplyPromo}>
-        <input 
-          type="text" 
-          placeholder="Промокод (CERAMICS15)" 
-          value={inputCode} 
-          onChange={e => setInputCode(e.target.value)} 
-          className="flex-1 bg-background border-2 border-border text-white p-2 font-mono text-xs outline-none focus:border-accent"
-        />
+        <input type="text" placeholder="Промокод (CERAMICS15)" value={inputCode} onChange={e => setInputCode(e.target.value)} className="flex-1 bg-background border-2 border-border text-white p-2 font-mono text-xs outline-none focus:border-accent" />
         <button type="submit" className="bg-[#111] border-2 border-border text-white p-2 px-3 cursor-pointer font-mono hover:border-accent">ОК</button>
       </form>
       {promoCode && <p className="text-green-500 text-[11px] mb-3 font-mono">Застосовано: {promoCode}</p>}
+
+      <CartItemNamesList />
 
       <div className="flex flex-col gap-3 border-t-2 border-border pt-4 mt-4">
         <div className="flex justify-between text-muted font-mono text-xs pb-3 border-b border-dashed border-border">
@@ -74,9 +71,7 @@ export default function CartPage() {
         </div>
         <div className="flex justify-between items-center">
           <p className="m-0 text-white font-mono text-base">Разом: <strong>{formatPrice(totalPrice)}</strong></p>
-          <button type="button" className="bg-transparent border-none text-muted hover:text-red-400 hover:underline cursor-pointer text-xs font-mono" onClick={clearCart}>
-            Очистити кошик
-          </button>
+          <button type="button" className="bg-transparent border-none text-muted hover:text-red-400 hover:underline cursor-pointer text-xs font-mono" onClick={clearCart}>Очистити кошик</button>
         </div>
       </div>
     </section>

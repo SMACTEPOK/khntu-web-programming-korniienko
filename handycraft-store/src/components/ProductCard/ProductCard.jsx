@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { CATEGORIES } from '@config/categories'
 import { calculateDiscountedPrice } from '../../utils/calculateDiscountedPrice'
 import { formatPrice } from '../../utils/formatPrice'
-import { useCartContext } from '../../context/useCartContext'
+import { useCartStore } from '../../store/cartStore'
 import { useNotificationContext } from '../../context/useNotificationContext'
 import { highlightMatch } from '../../utils/highlightMatch'
 import { Button } from '../ui/Button'
@@ -11,16 +11,15 @@ import { Button } from '../ui/Button'
 const PLACEHOLDER_IMAGE = '/src/assets/product-placeholder.svg'
 
 function ProductCard({ product, searchQuery }) {
-  const { items, addItem, promoCode } = useCartContext()
+  const addItem = useCartStore((s) => s.addItem)
+  const promoCode = useCartStore((s) => s.promoCode)
+  const cartQuantity = useCartStore((s) => s.items.find(i => i.id === product.id)?.quantity || 0)
   const { addNotification } = useNotificationContext()
 
   const { id, name, price, image, category, stock = 0 } = product
   const imageSrc = image || PLACEHOLDER_IMAGE
   const isHandmade = category === CATEGORIES.WOOD
   const isAvailable = stock > 0
-
-  const cartItem = items.find((i) => i.id === id)
-  const cartQuantity = cartItem ? cartItem.quantity : 0
   const isMaxInCart = cartQuantity >= stock
 
   const finalPrice = calculateDiscountedPrice(price, category, promoCode)
@@ -60,6 +59,8 @@ function ProductCard({ product, searchQuery }) {
           <span className={`px-2 py-1 bg-[#111] border text-[9px] font-bold tracking-wider uppercase font-mono ${isAvailable ? 'border-accent text-accent' : 'border-border text-muted'}`}>
             {isAvailable ? `В наявності: ${stock} шт.` : 'Немає в наявності'}
           </span>
+          {isHandmade && <span className="px-2 py-1 bg-[#222] text-white border border-accent text-[9px] font-bold tracking-wider uppercase font-mono shadow-[2px_2px_0_#111]">Хендмейд</span>}
+          {cartQuantity > 0 && <span className="px-2 py-1 bg-[#444] text-white border border-white text-[9px] font-bold tracking-wider uppercase font-mono">У кошику: {cartQuantity}</span>}
         </div>
 
         <Button onClick={handleAdd} disabled={!isAvailable || isMaxInCart} className="w-full mt-auto">

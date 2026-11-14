@@ -1,8 +1,8 @@
 import { NavLink, Outlet, useNavigation } from 'react-router'
-import { useCartContext } from '../context/useCartContext'
+import { useCartStore } from '../store/cartStore'
+import { selectTotalCount } from '../store/cartSelectors'
 import { useDeliveryCityContext } from '../context/useDeliveryCityContext'
 import NotificationToast from '../components/NotificationToast/NotificationToast'
-import DevMockPanel from '../components/DevMockPanel'
 
 const navLinkClass = ({ isActive }) => {
   const base = "font-mono text-xs uppercase tracking-wider px-3 py-2 border-2 transition-colors"
@@ -12,7 +12,7 @@ const navLinkClass = ({ isActive }) => {
 }
 
 export default function RootLayout() {
-  const { totalCount } = useCartContext()
+  const totalCount = useCartStore(selectTotalCount)
   const { city, setCity, cities } = useDeliveryCityContext()
   const navigation = useNavigation()
   const isLoading = navigation.state === 'loading'
@@ -26,10 +26,7 @@ export default function RootLayout() {
               <NavLink to="/" end className="hover:text-accent transition-colors">HandyCraft Store</NavLink>
             </h1>
             <div className="flex items-center gap-4">
-              <select 
-                className="bg-[#111] text-white border border-border p-2 px-3 font-mono text-xs outline-none cursor-pointer focus:border-accent"
-                value={city} onChange={(e) => setCity(e.target.value)}
-              >
+              <select className="bg-[#111] text-white border border-border p-2 px-3 font-mono text-xs outline-none cursor-pointer focus:border-accent" value={city} onChange={(e) => setCity(e.target.value)}>
                 {cities.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
               <NavLink to="/cart" className={navLinkClass}>
@@ -46,11 +43,7 @@ export default function RootLayout() {
         </div>
       </header>
 
-      <main 
-        className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-10 flex-1 transition-opacity duration-300 motion-reduce:transition-none ${
-          isLoading ? 'opacity-50' : 'opacity-100'
-        }`}
-      >
+      <main className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-10 flex-1 transition-opacity duration-300 motion-reduce:transition-none ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
         <Outlet />
       </main>
 
@@ -64,7 +57,6 @@ export default function RootLayout() {
       </footer>
 
       <NotificationToast />
-      {import.meta.env.DEV && <DevMockPanel />}
     </div>
   )
 }

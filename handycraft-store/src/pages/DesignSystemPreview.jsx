@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useCartContext } from '../context/useCartContext'
+import { useCartStore } from '../store/cartStore'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { Input } from '../components/ui/Input'
@@ -7,9 +7,9 @@ import { Card, CardTitle } from '../components/ui/Card'
 import { QuantityStepper } from '../components/ui/QuantityStepper'
 
 export default function DesignSystemPreview() {
-  const { items, addItem } = useCartContext()
+  const addItem = useCartStore((s) => s.addItem)
+  const items = useCartStore((s) => s.items)
 
-  // Додаємо демо-товар у кошик при відкритті сторінки, щоб лічильник працював
   useEffect(() => {
     if (!items.find(i => i.id === 'demo-preview')) {
       addItem({ id: 'demo-preview', name: 'Демо товар', price: 100, stock: 5, category: 'Демо' })
@@ -62,12 +62,9 @@ export default function DesignSystemPreview() {
             <CardTitle>Звичайна картка</CardTitle>
             <div className="p-4 text-sm text-muted font-mono">Це контент картки. Вона не клікабельна.</div>
           </Card>
-          
           <Card href="#test">
             <CardTitle>Клікабельна картка (Варіант 9)</CardTitle>
-            <div className="p-4 text-sm text-muted font-mono group-hover:text-white transition-colors">
-              Вся ця картка є одним посиланням. При натисканні Tab фокус охоплює всю картку.
-            </div>
+            <div className="p-4 text-sm text-muted font-mono group-hover:text-white transition-colors">Вся ця картка є одним посиланням.</div>
           </Card>
         </div>
       </section>

@@ -1,13 +1,15 @@
 import { Link, useLoaderData } from 'react-router'
 import { useReviews } from '../hooks/useReviews'
-import { useCartContext } from '../context/useCartContext'
+import { useCartStore } from '../store/cartStore'
 import { formatPrice } from '../utils/formatPrice'
 import { Button } from '../components/ui/Button'
 import Loader from '../components/Loader'
 
 export default function ProductPage() {
   const product = useLoaderData()
-  const { addItem } = useCartContext()
+  const addItem = useCartStore((s) => s.addItem)
+  // Варіант 14: Селектор для кількості конкретного товару
+  const inCart = useCartStore((s) => s.items.find(i => i.id === product.id)?.quantity || 0)
   const { reviews, isLoading, error } = useReviews(product.id)
 
   return (
@@ -25,24 +27,24 @@ export default function ProductPage() {
         <p className="text-2xl font-bold text-accent font-mono">{formatPrice(product.price)}</p>
         <p className="text-muted font-mono text-sm leading-relaxed">{product.category}</p>
         
+        {inCart > 0 && (
+          <p className="font-mono text-sm text-white uppercase bg-[#333] px-3 py-2 border border-border inline-block w-fit">
+            У кошику: <span className="text-accent font-bold">{inCart}</span> шт.
+          </p>
+        )}
+
         <div className="mt-auto pt-6">
-          <Button onClick={() => addItem(product)} disabled={product.stock <= 0} className="w-full">
-            {product.stock > 0 ? "Додати в кошик" : "Немає в наявності"}
+          <Button onClick={() => addItem(product)} disabled={product.stock <= 0 || inCart >= product.stock} className="w-full">
+            {product.stock <= 0 ? "Немає в наявності" : (inCart >= product.stock ? "Максимум" : "Додати в кошик")}
           </Button>
         </div>
       </div>
 
-      {/* Варіант 9 + 14: Відгуки через хук */}
       <div className="md:col-span-2 mt-8 border-t-2 border-border pt-6">
         <h3 className="text-lg font-mono text-white uppercase mb-4">Відгуки покупців</h3>
-        
         {isLoading && <Loader label="Завантаження відгуків..." />}
         {error && <p className="text-danger font-mono text-sm">Не вдалося завантажити відгуки.</p>}
-        
-        {!isLoading && !error && reviews.length === 0 && (
-          <p className="text-muted font-mono text-sm">Ще немає відгуків для цього товару.</p>
-        )}
-
+        {!isLoading && !error && reviews.length === 0 && <p className="text-muted font-mono text-sm">Ще немає відгуків.</p>}
         {!isLoading && !error && reviews.length > 0 && (
           <ul className="flex flex-col gap-4">
             {reviews.map(r => (
